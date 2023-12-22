@@ -1,0 +1,9 @@
+<!-- task_detail.html -->
+
+<h2>{{ task.title }}</h2>
+<p>{{ task.description }}</p>
+<p>Status: {{ task.status }}</p>
+
+<a href="{% url 'update_status' task.id 'todo' %}">Set to To Do</a>
+<a href="{% url 'update_status' task.id 'in_progress' %}">Set to In Progress</a>
+<a href="{% url 'update_status' task.id 'done' %}">Set to Done</a>

@@ -1,0 +1,77 @@
+<!-- stockapp/templates/stockapp/stock_detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Candlestick Chart</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+<div id="live-candlestick-chart"></div>
+
+<script>
+    // Sample stock data (replace this with your actual data)
+    var stock_data = [
+        { date: "2023-01-01", open: 1500, high: 1600, low: 1400, close: 1550 },
+        { date: "2023-01-02", open: 1550, high: 1650, low: 1500, close: 1600 },
+        // Add more data points as needed
+    ];
+
+    // Extracting data for the Plotly chart
+    var dates = stock_data.map(data => data.date);
+    var opens = stock_data.map(data => data.open);
+    var highs = stock_data.map(data => data.high);
+    var lows = stock_data.map(data => data.low);
+    var closes = stock_data.map(data => data.close);
+
+    var trace = {
+        type: 'candlestick',
+        x: dates,
+        open: opens,
+        high: highs,
+        low: lows,
+        close: closes,
+        increasing: { line: { color: 'green' } },
+        decreasing: { line: { color: 'red' } }
+    };
+
+    var layout = {
+        title: 'Live Candlestick Chart',
+        xaxis: {
+            type: 'category',
+            categoryorder: 'category ascending',
+            showgrid: false,
+            tickangle: 45,
+            tickmode: 'array',
+            tickvals: dates,
+            ticktext: dates,
+        },
+        yaxis: {
+            title: 'Stock Price',
+            range: [Math.min(...lows) - 50, Math.max(...highs) + 50],
+        },
+    };
+
+    Plotly.newPlot('live-candlestick-chart', [trace], layout);
+
+    // Update the chart every minute
+    setInterval(function () {
+        // Fetch new data and update the chart
+        // Replace this with the logic to fetch new data from the server or another source
+        var newData = {
+            x: [dates],
+            open: [opens],
+            high: [highs],
+            low: [lows],
+            close: [closes],
+        };
+
+        // Add new data to the chart
+        Plotly.addTraces('live-candlestick-chart', newData);
+    }, 60000);  // 60000 milliseconds = 1 minute
+</script>
+
+</body>
+</html>

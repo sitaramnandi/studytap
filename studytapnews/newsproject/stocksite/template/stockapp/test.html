@@ -1,0 +1,35 @@
+<!-- stockapp/templates/stockapp/stock_detail.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Stock Chart</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+<!-- Stock data table -->
+{% comment %} <table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in stock_data %}
+        <tr>
+            <td>{{ data.date }}</td>
+            <td>{{ data.price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table> {% endcomment %}
+
+<!-- Plotly candlestick chart -->
+{{ candlestick_html|safe }}
+
+</body>
+</html>

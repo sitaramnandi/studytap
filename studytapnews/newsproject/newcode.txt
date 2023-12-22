@@ -1,0 +1,88 @@
+views.py
+--
+from django.shortcuts import render
+import requests
+from django.http import JsonResponse
+from bs4 import BeautifulSoup 
+# import html2text
+import re 
+# Create your views here.
+def index_page(request):
+    return render(request,"newsapp/index.html")
+import requests
+from bs4 import BeautifulSoup
+from django.http import JsonResponse
+from django.shortcuts import render
+import html2text
+
+def fetch_10th_class_news(request):
+    try:
+        # List of RSS feed URLs for multiple news sources
+        rss_feed_urls = [
+            "http://www.politico.com/rss/Top10Blogs.xml",
+            "http://feeds.nbcnews.com/feeds/nbcpolitics",
+            "http://www.politico.com/rss/politicopicks.xml",
+            # Add more RSS feed URLs as needed
+        ]
+
+        # Collect news data from all RSS feeds
+        news_data = []
+        for rss_feed_url in rss_feed_urls:
+            response = requests.get(rss_feed_url)
+
+            if response.status_code == 200:
+                data = response.text
+                # Parse the XML data (RSS feed) using BeautifulSoup to extract the news content.
+                soup = BeautifulSoup(data, 'xml')  # Use 'xml' parser for RSS feeds
+                items = soup.find_all('item')
+
+                # Extract and process the text and image content of each news item.
+                for item in items:
+                    title = item.find('title').get_text()
+                    description_html = item.find('description').get_text()
+
+                    # Extract image URLs from the description
+                    description_soup = BeautifulSoup(description_html, 'html.parser')
+                    image_urls = [img['src'] for img in description_soup.find_all('img')]
+
+                    link = item.find('link').get_text()
+
+                    news_data.append({
+                        'title': title,
+                        'image_urls': image_urls,
+                        'link': link,
+                    })
+
+        return render(request, "newsapp/school_news.html", {'news_data': news_data})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+=========================================================================================================================
+education_news.html
+----------------
+<!DOCTYPE html>
+<html>
+<head>
+    <title>News from Multiple Channels</title>
+</head>
+<body>
+    <h1>News from Multiple Channels</h1>
+    <ul>
+        {% for news_item in news_data %}
+        <li>
+            <h2>{{ news_item.title }}</h2>
+            <p>{{ news_item.description | safe }}</p>
+            <ul>
+                {% for image_url in news_item.image_urls %}
+                <li>
+                    <!-- Ensure that the image URLs are properly formatted and include the full URL -->
+                    <img src="{{ image_url }}" alt="Image">
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

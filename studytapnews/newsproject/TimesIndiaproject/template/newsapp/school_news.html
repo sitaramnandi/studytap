@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10th Class News</title>
+    <style>
+        body {
+            background-color: aqua;
+        }
+        #newsContainer {
+            width: 80%; /* Adjust the width as needed */
+            margin: 0 auto; /* Center the news container horizontally */
+            padding: 20px; /* Add some padding for spacing */
+        }
+        ul {
+            list-style: none; /* Remove default list bullets */
+            padding: 0;
+        }
+        li {
+            margin-bottom: 20px; /* Adjust the margin as needed for spacing between news items */
+            background-color: #fff; /* Background color for each news item */
+            border: 1px solid #ccc; /* Add a border for separation */
+            padding: 10px; /* Add padding to the news items */
+        }
+        h2 {
+            font-size: 24px; /* Adjust the font size as needed */
+            margin: 0; /* Remove default margins */
+        }
+        img {
+            max-width: 100%; /* Ensure images fit within the news item width */
+        }
+        p {
+            font-size: 16px; /* Adjust the font size as needed */
+        }
+        a {
+            text-decoration: none; /* Remove underline from links */
+            color: #007bff; /* Set link color (blue) */
+        }
+    </style>
+</head>
+<body>
+   
+    <div id="newsContainer">
+        <ul>
+            {% for item in news_data %}
+                <li>
+                    <h2>{{ item.title }}</h2>
+                    {% for image_url in item.image_urls %}
+                        <img src="{{ image_url }}" alt="Image">
+                    {% endfor %}
+                    <p>{{ item.description|safe }}</p>
+                    <a href="{{ item.link }}" target="_blank">Read More</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!-- news/templates/news/combined_news.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Combined Educational News</title>
+</head>
+<body>
+
+<h1>Combined Educational News</h1>
+
+<h2>All News</h2>
+<ul>
+    {% for news in times_of_india_news %}
+        <li>
+            <h3>{{ news.title }}</h3>
+            <p>Source: Times of India</p>
+            <a href="{{ news.article_url }}" target="_blank">Read More</a>
+        </li>
+    {% endfor %}
+    
+    {% for news in indian_express_news %}
+        <li>
+            <h3>{{ news.title }}</h3>
+            <p>Source: Indian Express</p>
+            <a href="{{ news.article_url }}" target="_blank">Read More</a>
+        </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>

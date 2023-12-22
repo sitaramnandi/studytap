@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student List</title>
+</head>
+<body>
+    <h1>Student List</h1>
+
+    <!-- Start the table before the for loop -->
+    <table border="2">
+        <thead>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Actions</th>
+        </thead>
+
+        <!-- Iterate over the list of students using a for loop -->
+        {% for student in student_lst %}
+        <tr>
+            <!-- Display student information inside table rows -->
+            <td>{{ student.stname }}</td>
+            <td>{{ student.age }}</td>
+            <td><a href="/update/{{student.id}}">update</a>&nbsp;&nbsp;<a href="/delete/{{student.id}}">Delete</a></td>
+        </tr>
+        <!-- End of the for loop -->
+        {% endfor %}
+    </table>
+</body>
+</html>

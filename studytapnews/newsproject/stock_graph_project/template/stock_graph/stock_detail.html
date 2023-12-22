@@ -1,0 +1,76 @@
+{% comment %} <!-- Add a simple form to get user input -->
+<form method="post" action="{% url 'stock_detail' %}">
+    {% csrf_token %}
+    <label for="stock_name">Enter Stock Name:</label>
+    <input type="text" id="stock_name" name="stock_name" required>
+    <button type="submit">Search</button>
+</form>
+
+<div id="graph-container">
+    <h1>{{ stock_name }} Stock Detail</h1>
+    <div id="candlestick-graph"></div>
+</div>
+
+<div id="info-container">
+    <!-- Add your information about the stock here -->
+    <h2>About {{ stock_name }}</h2>
+    <p>This is information about the stock...</p>
+</div>
+
+<script>
+    var stockData = {{ stock_data | safe }};
+
+    var trace = {
+        x: stockData.map(entry => entry.date),
+        open: stockData.map(entry => entry.open_price),
+        high: stockData.map(entry => entry.high_price),
+        low: stockData.map(entry => entry.low_price),
+        close: stockData.map(entry => entry.close_price),
+        type: 'candlestick',
+        xaxis: 'x',
+        yaxis: 'y'
+    };
+
+    var layout = {
+        title: `${stock_name} Stock Detail`,
+        xaxis: { rangeslider: { visible: false } },
+        yaxis: { title: 'Stock Price' }
+    };
+
+    Plotly.newPlot('candlestick-graph', [trace], layout);
+</script> {% endcomment %}
+<!-- stock_graph/templates/stock_graph/stock_detail.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ stock_data.0.name }} Stock Detail</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>{{ stock_data.0.name }} Stock Detail</h1>
+    <div id="candlestick-graph"></div>
+
+    <script>
+        var stockData = {{ stock_data | safe }};
+
+        var trace = {
+            x: stockData.map(entry => entry.date),
+            open: stockData.map(entry => entry.open_price),
+            high: stockData.map(entry => entry.high_price),
+            low: stockData.map(entry => entry.low_price),
+            close: stockData.map(entry => entry.close_price),
+            type: 'candlestick',
+            xaxis: 'x',
+            yaxis: 'y'
+        };
+
+        var layout = {
+            title: `${stockData[0].name} Stock Detail`,
+            xaxis: { rangeslider: { visible: false } },
+            yaxis: { title: 'Stock Price' }
+        };
+
+        Plotly.newPlot('candlestick-graph', [trace], layout);
+    </script>
+</body>
+</html>

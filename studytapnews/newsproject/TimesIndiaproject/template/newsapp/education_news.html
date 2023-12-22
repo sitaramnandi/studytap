@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>News from Multiple Channels</title>
+</head>
+<body>
+    <h1>News from Multiple Channels</h1>
+    <ul>
+        {% for news_item in news_data %}
+        <li>
+            <h2>{{ news_item.title }}</h2>
+            <p>{{ news_item.description | safe }}</p>
+           
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
